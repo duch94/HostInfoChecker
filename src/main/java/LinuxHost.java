@@ -23,7 +23,6 @@ public class LinuxHost {
         String laInfoCommand = "/proc/loadavg";
         String cpuInfoCommand = "/proc/cpuinfo";
         String memInfoCommand = "/proc/meminfo";
-        String dskInfoCommand = "/proc/diskstats";
 
         try {
             JSch jsch = new JSch();
@@ -45,7 +44,6 @@ public class LinuxHost {
             InputStream laInfoStream = sftpChannel.get(laInfoCommand);
             InputStream cpuCoresStream = sftpChannel.get(cpuInfoCommand);
             InputStream memInfoStream = sftpChannel.get(memInfoCommand);
-            //InputStream dskInfoStream = sftpChannel.get(dskInfoCommand);
 
             ChannelExec execChannel = (ChannelExec) session.openChannel("exec");
             execChannel.setCommand("df");
@@ -65,11 +63,11 @@ public class LinuxHost {
 
             session.disconnect();
         } catch (com.jcraft.jsch.JSchException e) {
-            System.err.print(e);
+            e.printStackTrace();
         } catch (com.jcraft.jsch.SftpException e) {
-            System.err.print(e);
+            e.printStackTrace();
         } catch (java.io.IOException e) {
-            System.err.print(e);
+            e.printStackTrace();
         }
     }
 
@@ -89,7 +87,7 @@ public class LinuxHost {
                         return line;
                     }
                 } catch (java.io.IOException e) {
-                    System.out.println(e.getMessage() + ": " + e.getCause().toString());
+                    e.printStackTrace();
                 }
             case "NCORES":
                 try {
@@ -101,7 +99,7 @@ public class LinuxHost {
                         }
                     }
                 } catch (java.io.IOException e) {
-                    System.out.println(e.getMessage() + ": " + e.getCause().toString());
+                    e.printStackTrace();
                 }
             case "MEM":
                 try {
@@ -116,7 +114,7 @@ public class LinuxHost {
                     }
 
                 } catch (java.io.IOException e) {
-                    System.out.println(e.getMessage() + ": " + e.getCause().toString());
+                    e.printStackTrace();
                 }
                 break;
             case "DISK":
@@ -131,7 +129,7 @@ public class LinuxHost {
                         }
                     }
                 } catch (java.io.IOException e) {
-                    System.out.println(e.getMessage() + ": " + e.getCause().toString());
+                    e.printStackTrace();
                 }
                 break;
             default:
@@ -141,25 +139,9 @@ public class LinuxHost {
                         line += temp + "\n";
                     bufer.close();
                 } catch (java.io.IOException e) {
-                    System.out.println(e.getMessage() + ": " + e.getCause().toString());
+                    e.printStackTrace();
                 }
                 break;
-        }
-        return line;
-    }
-
-    private String cpuCoresFromStreamToString(InputStream stream) {
-        BufferedReader bufer = new BufferedReader(new InputStreamReader(stream));
-        String line = "";
-        String temp;
-        try {
-            while ((temp = bufer.readLine()) != null)
-                if (temp.contains("cpu cores")) {
-                    line = temp.split(": ")[1];
-                    return line;
-                }
-        } catch (java.io.IOException e) {
-            System.out.println(e.getMessage() + ": " + e.getCause().toString());
         }
         return line;
     }
