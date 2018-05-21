@@ -6,5 +6,5 @@ Create a service that each minute login to Linux node by SSH, check RAM, Disk Sp
  - get hardware info from host (laString LA, memoryString usage, diskString usage) (/)
  - save in DB timestamp and the rest info
  - add scheduler to autostart every minute (/)
- - send email if any of metrics reach 90%
- - send email if any of metrics reach 70% and was increasing during last 15 minutes
+ - send email if any of metrics reach 90% (/)
+ - send email if any of metrics reach 70% and was increasing during last 15 minutes (/)
