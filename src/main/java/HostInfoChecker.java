@@ -33,6 +33,7 @@ class MyTask extends TimerTask {
     public void run() {
         host.receiveMetricsFromHost();
         HostInfo metrics = host.getMetricsObject();
+
         metrics.printStats();
         metrics.saveToDb();
         metrics.checkHostResources();
