@@ -159,6 +159,7 @@ public class HostInfo {
     public void saveToDb() {
         DataBaseClient dbClient = new DataBaseClient("127.0.0.1");
         dbClient.getHosts();
+        dbClient.saveMetrics(cpu, mem, dsk, this.timestamp);
     }
 
     private void debugPrint(String text) {
